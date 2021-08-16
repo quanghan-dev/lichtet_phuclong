@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"/>
+    <link rel="stylesheet"
+          th:href="@{/36e64f19f57a05c8cd5b6bf7eff72703b4bbab19def7832eb4e686e7fa482eef/c3c9b728b0023bd6e21f58dfdd98c271cd04da9f0bdd8d51a1a8a25fa55443f5.css}">
+    <link rel="shortcut icon" th:href="@{/images/logos/favicon.ico}">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <title>Lịch Gỗ Phù Điêu Cao Cấp - Chiết khấu CỰC CAO, CAM KẾT RẺ NHẤT</title>
+</head>
+<body>
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous"
+        src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v10.0&appId=272669024584617&autoLogAppEvents=1"
+        nonce="7aa8Vy1o"></script>
+<!-- Top header -->
+<div class="top-header">
+    <p id="top-header-p">Để hỗ trợ nhanh nhất: &nbsp;<i class="fa fa-phone"></i> 0966 28 38 99</p>
+</div>
+<!-- nav bar -->
+<nav th:replace="fragments/navbar"></nav>
+
+<div class="container mb-5">
+    <div class="card mt-3" th:if="${session.cart != null && session.cartNum != 0}">
+        <div class="row">
+            <div class="col-md-8 cart bg-light">
+                <div class="title">
+                    <div class="row">
+                        <div class="col">
+                            <h4><b>Giỏ Hàng</b></h4>
+                        </div>
+                        <div class="col align-self-center text-right text-muted"
+                             th:text="${session.cartNum + ' mặt hàng'}"></div>
+
+                    </div>
+                </div>
+                <hr class="row mb-0">
+                <div class="row border-bottom" th:each="oneCart : ${session.cart.values()}">
+                    <div class="row main align-items-center">
+                        <div class="col-2"><img class="img-fluid"
+                                                th:src="@{'../images/' + ${oneCart.lich.nhomLich} + '/' + ${oneCart.lich.anh}}"
+                                                style="width: 3.5rem;">
+                        </div>
+                        <div class="col py-0">
+                            <a class="mb-0 text-red" th:text="${oneCart.lich.ten}"
+                               th:href="@{'/' + ${oneCart.lich.nhomLich}+ '/' + ${oneCart.lich.id}}"
+                               style="padding-left: 0; text-decoration: none;"></a>
+                            <div class="text-muted">
+                                <span th:text="${oneCart.lich.gia}"></span>
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <form class="number-input bg-light my-0 d-flex justify-content-center"
+                                  style="float: right; text-decoration: none;"
+                                  method="post" th:action="@{'/gio-hang/' + ${oneCart.lich.id} + '/update'}">
+                                <a class="minus btn" th:href="@{'/gio-hang/' + ${oneCart.lich.id} + '/minus'}"
+                                   th:classappend="${session.disableBtnMinus} ? disabled : ''">
+                                    -
+                                </a>
+                                <!--                                    this.parentNode.querySelector('input[type=number]').stepDown()-->
+                                <!--                                    this.parentNode.querySelector('input[type=number]').stepUp()-->
+                                <input class="quantity" min="1" name="quantity" th:value="${oneCart.quantity}"
+                                       type="number">
+                                <a class="plus btn" th:href="@{'/gio-hang/' + ${oneCart.lich.id} + '/plus'}">
+                                    +
+                                </a>
+                                <input type="submit" style="visibility: hidden; position: absolute;"/>
+                            </form>
+                        </div>
+                        <a class="close" th:href="@{'/gio-hang/xoa/' + ${oneCart.lich.id}}"
+                           onclick="return confirm('Bạn sẽ xoá mặt hàng này chứ?')">&#10005;</a>
+                    </div>
+                </div>
+
+                <div class="row" style="padding-top: 2vh;">
+                    <div class="col text-red"><strong>Tổng cộng</strong></div>
+                    <div class="col text-right"><strong th:text="${session.total}"></strong></div>
+                </div>
+                <div class="row text-muted">
+                    <p class="mt-2"><i class="text-red">*</i> Vui lòng liên hệ 0966 28 38 99 nếu có nhu cầu đặt số
+                        lượng lớn để hưởng nhiều ưu đãi.
+                    </p>
+                </div>
+                <div class="back-to-shop"><a th:href="@{/}">&leftarrow;
+                    <span class="text-muted">Tiếp tục mua hàng</span>
+                </a>
+                </div>
+            </div>
+
+            <div class="col-md-4 summary">
+                <div class="row mb-3" style="width: 100%;">
+                    <h5><b>Thông tin</b></h5>
+                </div>
+                <form class="row" action="/dat-hang" method="post">
+                    <div class="form-label-group">
+                        <input type="text" id="inputName" class="form-control input-cart" placeholder="Họ và tên"
+                               required name="hoVaTen">
+                        <label for="inputName">Họ và tên <span class="text-red">*</span></label>
+                    </div>
+                    <div class="form-label-group">
+                        <input type="text" id="inputPhone" class="form-control input-cart"
+                               placeholder="Số điện thoại" required pattern="[0-9]{10}"
+                               title="Vui lòng nhập số điện thoại" name="soDienThoai">
+                        <label for="inputPhone">Số điện thoại <span class="text-red">*</span></label>
+                    </div>
+                    <div class="form-label-group">
+                        <input type="email" id="inputEmail" class="form-control input-cart" placeholder="Email"
+                               name="email">
+                        <label for="inputEmail">Email</label>
+                    </div>
+                    <div class="form-label-group">
+                        <input type="text" id="inputAddress" class="form-control input-cart" placeholder="Địa chỉ"
+                               required name="diaChi">
+                        <label for="inputAddress">Địa chỉ <span class="text-red">*</span></label>
+                    </div>
+                    <label for="inputNote">Ghi chú đơn hàng</label>
+                    <div class="form-label-group">
+                            <textarea type="text" id="inputNote" class="form-control input-cart"
+                                      placeholder="Ghi chú về đơn hàng của bạn, ví dụ ghi chú đặc biệt để giao hàng"
+                                      style="height: 6rem; line-height: 1.2;" name="ghiChu"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-danger" style="width: 100%;">ĐẶT HÀNG</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${session.cart == null || session.cartNum == 0}" class="row h-100">
+        <div class="col-sm-12" th:if="${session.success == null}">
+            <div class="col-sm-12 d-flex justify-content-center">
+                <img th:src="@{../images/noti/empty-shopping-cart.svg}" class="col-sm-3 my-auto">
+            </div>
+            <p class="col-sm-12 my-auto" style="text-align: center;">Không có sản phẩm nào trong giỏ hàng</p>
+            <div class="col-sm-12 d-flex justify-content-center">
+                <a th:href="@{/}" class="btn btn-outline-danger mt-3 col-sm-6" role="button">Về trang chủ</a>
+            </div>
+            <p class="col-sm-12 mt-3" style="text-align: center;">
+                Khi cần trợ giúp vui lòng gọi
+                <a class="text-red my-auto" href="tel:0966 28 38 99">0966 28 38 99</a>
+                hoặc gửi mail đến <a class="text-red my-auto" href="mailto:kinhdoanhphuclong@gmail.com">kinhdoanhphuclong@gmail.com</a>
+            </p>
+        </div>
+        <div class="col-sm-12" th:if="${session.success != null}">
+            <div class="col-sm-12 d-flex justify-content-center" style="display: flex;">
+                <img th:src="@{../images/noti/check.png}" class="col-sm-3 my-auto">
+            </div>
+            <p class="col-sm-12 my-auto" style="text-align: center;">Đơn hàng của bạn đã được ghi nhận, chúng tôi sẽ
+                liên hệ với bạn sớm nhất có thể.</p>
+            <div class="col-sm-12 d-flex justify-content-center">
+                <a th:href="@{/}" class="btn btn-outline-danger mt-3 col-sm-6" role="button">Về trang chủ</a>
+            </div>
+            <p class="col-sm-12 mt-3" style="text-align: center;">
+                Khi cần trợ giúp vui lòng gọi
+                <a class="text-red my-auto" href="tel:0966 28 38 99">0966 28 38 99</a>
+                hoặc gửi mail đến <a class="text-red my-auto" href="mailto:kinhdoanhphuclong@gmail.com">kinhdoanhphuclong@gmail.com</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<footer th:replace="fragments/footer"></footer>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script th:src="@{/16cedf80ade01c62bdd1ae931d0492330c0b62bf294c08c095ce2fab21a9298d/248806862391c77740e9c2e7a0d2e7a7fad14e07f686f8551ec9767c3d737bda.js}"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>

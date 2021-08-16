@@ -1,0 +1,197 @@
+<nav class="navbar navbar-expand-md navbar-light scrolling-navbar sticky-top"
+     style="padding: 0rem 1rem; margin-bottom: .5rem;" th:fragment="navbar">
+
+    <!--navbar brand desktop-->
+    <a class="navbar-brand mb-0 h1 brand-desktop" th:href="@{'/'}" style="color: rgb(210, 0, 0); font-size: 1.5rem;">
+        <img th:src="@{../images/logos/PhucLongLogo.png}" width="35" height="35" class="d-inline-block align-top"
+             alt="Logo_Phuc_Long">
+        Lịch Tết Phúc Long
+    </a>
+
+    <!--navbar brand mobile-->
+    <a class="navbar-brand mb-0 h1 brand-mobile" th:href="@{'/'}" style="color: rgb(210, 0, 0); font-size: 1.5rem;">
+        <img th:src="@{../images/logos/PhucLongLogo.png}" width="40" height="40" class="d-inline-block align-top"
+             alt="Logo_Phuc_Long">
+        <div class="mobile-brand-name d-inline-block align-top">
+            <p id="top-brand">Lịch Tết</p>
+            <p id="bot-brand">Phúc Long</p>
+        </div>
+    </a>
+
+    <!--button search mobile-->
+    <div style="display: flex;">
+        <div class="nav-item dropdown active " style="display: flex;">
+            <a class="nav-search navbar-toggler" data-toggle="collapse" id="navbarDropdown" role="button"
+               data-target="#searchToggle" aria-controls="navbarToggleExternalContent" aria-expanded="false"
+               aria-label="Toggle navigation">
+                <i class="fa fa-search"></i>
+            </a>
+        </div>
+        <!-- cart mobile -->
+        <div class="nav-item" style="display: flex;">
+            <a class="nav-cart" th:href="@{/gio-hang/thong-tin}">
+                <i class="fa fa-shopping-cart"></i>
+                <span class="badge badge-pill badge-danger" th:if="${session.cart != null && session.cartNum != 0}" th:text="${session.cartNum}"></span>
+            </a>
+        </div>
+
+        <!--button open sidenav-->
+        <button class="navbar-toggler" type="button" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+                onclick="openNav()">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+    <script>
+        function search_product() {
+            let keySearch = document.getElementById("search").value;
+            $.ajax(`/search/` + keySearch)
+                .done(function (result) {
+                    $("#searchMobile").autocomplete({
+                        source: result,
+                        select: function (event, ui) {
+                            $("#searchMobile").val(ui.item.label);
+                            window.location.href = ui.item.value;
+                        }
+                    });
+                    $("#search").autocomplete({
+                        source: result,
+                        select: function (event, ui) {
+                            $("#search").val(ui.item.label);
+                            window.location.href = ui.item.value;
+                        }
+                    });
+                })
+                .fail(function (error) {
+                    console.log(error);
+                });
+        };
+    </script>
+    <!-- form search mobile -->
+    <div class="collapse" id="searchToggle" style="width: 100%;">
+        <div class="search-box my-2 my-lg-0" autocomplete="off">
+            <i class="fa fa-search" style="color: rgba(0,0,0,.5)"></i></button>
+            <input class="search-input" type="text" placeholder="Bạn cần tìm gì?"
+                   aria-label="Search" id="searchMobile" oninput="search_product()" name="key-search">
+        </div>
+    </div>
+    </div>
+
+    <!--sidenav-->
+    <div id="sidenav" class="sidenav">
+
+        <!--close sidenav-->
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="margin-right: -1rem;">&times;</a>
+        <div class="dropdown-divider"></div>
+
+        <!--Lịch gỗ cao cấp Sidenav-->
+        <a href="#" class="dropdown-btn" role="button">
+            Lịch Gỗ Cao Cấp
+            <i class="fa fa-caret-down"></i>
+        </a>
+        <div class="dropdown-container">
+            <a th:href="@{/n/Lich-Phu-Dieu}">
+                Lịch Phù Điêu
+            </a>
+            <div class="dropdown-divider" style="border-top: 1px solid #ffe9e9;"></div>
+            <a th:href="@{/n/Lich-Khung-Tranh-Gan-Phu-Dieu}">
+                Lịch Khung Tranh Gắn Phù Điêu
+            </a>
+        </div>
+        <div class="dropdown-divider"></div>
+
+        <!--Lịch Gỗ 3D cao cấp Sidenav-->
+        <a th:href="@{/n/Lich-Go-3D-Cao-Cap}" class="dropdown-btn" role="button">
+            Lịch Gỗ 3D Cao Cấp
+        </a>
+        <div class="dropdown-divider"></div>
+
+        <!--Lịch Gỗ Thư Pháp Sidenav-->
+        <a th:href="@{/n/Lich-Go-Thu-Phap}" class="dropdown-btn" role="button">
+            Lịch Gỗ Thư Pháp
+        </a>
+        <div class="dropdown-divider"></div>
+
+        <!--Lịch Gỗ 3D khung tranh Sidenav-->
+        <a th:href="@{/n/Lich-Go-3D-Khung-Tranh}" class="dropdown-btn" role="button">
+            Lịch Gỗ Thư Pháp
+        </a>
+        <div class="dropdown-divider"></div>
+
+        <!--Lịch Gỗ Phật Giáo Sidenav-->
+        <a th:href="@{/n/Lich-Go-Phat-Giao}" class="dropdown-btn" role="button">
+            Lịch Gỗ Phật Giáo
+        </a>
+        <div class="dropdown-divider"></div>
+
+        <!--Lịch Gỗ Công Giáo Sidenav-->
+        <a th:href="@{/n/Lich-Go-Cong-Giao}" class="dropdown-btn" role="button">
+            Lịch Gỗ Công Giáo
+        </a>
+    </div>
+
+    <!--navbar desktop-->
+    <div class="collapse navbar-collapse dropdown-menu-right" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto justify-content-between">
+            <!-- Lịch Gỗ Cao Cấp-->
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Lịch Gỗ Cao Cấp&nbsp;
+                    <i class="fas fa-angle-down"></i>
+                </a>
+                <div class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" th:href="@{/n/Lich-Phu-Dieu}">Lịch Phù Điêu</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" th:href="@{/n/Lich-Khung-Tranh-Gan-Phu-Dieu}">Lịch Khung Tranh Gắn Phù
+                        Điêu</a>
+                </div>
+            </li>
+
+            <!-- Lịch Gỗ 3D cao cấp -->
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/n/Lich-Go-3D-Cao-Cap}">Lịch Gỗ 3D Cao Cấp</a>
+            </li>
+            <!-- Lịch Gỗ Thư Pháp -->
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/n/Lich-Go-Thu-Phap}">Lịch Gỗ Thư Pháp</a>
+            </li>
+
+            <!-- Lịch Gỗ 3D khung tranh -->
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/n/Lich-Go-3D-Khung-Tranh}">Lịch Gỗ 3D Khung Tranh</a>
+            </li>
+            <!-- Lịch Gỗ Phật Giáo -->
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/n/Lich-Go-Phat-Giao}">Lịch Gỗ Phật Giáo</a>
+            </li>
+            <!-- Lịch Gỗ Công Giáo -->
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/n/Lich-Go-Cong-Giao}">Lịch Gỗ Công Giáo</a>
+            </li>
+        </ul>
+        <div class="search-box my-2 my-lg-0" autocomplete="off">
+            <input class="search-input" type="text" placeholder="Bạn cần tìm gì?"
+                   aria-label="Search" id="search" name="key-search" oninput="search_product()">
+            <i class="fa fa-search" style="color: rgba(0,0,0,.5)"></i>
+        </div>
+
+    <!--Shopping cart-->
+    <form class="form-inline my-sm-0 shopping-cart" action="/gio-hang/thong-tin">
+        <button class="btn btn-outline-dark" type="submit">
+            <i class="fa fa-shopping-cart"></i>
+            <span class="badge badge-pill badge-danger" th:if="${session.cart != null && session.cartNum != 0}" th:text="${session.cartNum}"></span>
+        </button>
+    </form>
+    </div>
+</nav>
+
+<nav class="visible-xs navbar fixed-bottom">
+    <div class="nav-item active bg-danger" style="width: 50%; text-align: center;">
+        <a th:href="@{tel:0966 28 38 99}" class="text-white">Gọi ngay</a>
+    </div>
+    <div class="nav-item active bg-danger" style="width: 50%; text-align: center;">
+        <a th:href="@{sms:0966 28 38 99}" class="text-white">Nhắn tin</a>
+    </div>
+    </ul>
+</nav>
